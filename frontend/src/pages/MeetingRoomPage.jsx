@@ -76,7 +76,9 @@ function MeetingRoomPage() {
       return
     }
 
-    /* CHAT */
+    /* ========================================
+       CHAT
+    ======================================== */
 
     const savedChats =
       JSON.parse(
@@ -100,18 +102,42 @@ function MeetingRoomPage() {
       )
     }
 
-    /* NOTES */
+
+    /* ========================================
+       NOTES
+    ======================================== */
 
     const savedNotes =
       JSON.parse(
         localStorage.getItem('wabiMeetingNotes')
       ) || {}
 
-    setMeetingNote(
-      savedNotes[meeting.id] || ''
-    )
+    /*
+      Load the note belonging to THIS meeting.
+      If there is no saved note, use the note
+      stored directly on the meeting if available.
+    */
 
-    /* POLLS */
+    const savedNote =
+      savedNotes[meeting.id]
+
+    if (
+      savedNote !== undefined &&
+      savedNote !== null
+    ) {
+      setMeetingNote(savedNote)
+    } else {
+      setMeetingNote(
+        meeting.meetingNote ||
+        meeting.note ||
+        ''
+      )
+    }
+
+
+    /* ========================================
+       POLLS
+    ======================================== */
 
     const savedPolls =
       JSON.parse(
@@ -122,7 +148,10 @@ function MeetingRoomPage() {
       savedPolls[meeting.id] || []
     )
 
-    /* FILES */
+
+    /* ========================================
+       FILES
+    ======================================== */
 
     const savedFiles =
       JSON.parse(
@@ -133,7 +162,10 @@ function MeetingRoomPage() {
       savedFiles[meeting.id] || []
     )
 
-    /* AGENDA */
+
+    /* ========================================
+       AGENDA
+    ======================================== */
 
     const savedAgenda =
       JSON.parse(
@@ -143,7 +175,42 @@ function MeetingRoomPage() {
     setAgendaItems(
       savedAgenda[meeting.id] || []
     )
+
   }, [meeting])
+
+
+  /* ========================================
+     AUTO-SAVE MEETING NOTE
+  ======================================== */
+
+  useEffect(() => {
+    if (!meeting) {
+      return
+    }
+
+    /*
+      Save notes automatically whenever the
+      note changes.
+
+      This fixes the problem where the note
+      disappears after leaving and re-entering
+      the meeting.
+    */
+
+    const savedNotes =
+      JSON.parse(
+        localStorage.getItem('wabiMeetingNotes')
+      ) || {}
+
+    savedNotes[meeting.id] =
+      meetingNote
+
+    localStorage.setItem(
+      'wabiMeetingNotes',
+      JSON.stringify(savedNotes)
+    )
+
+  }, [meeting, meetingNote])
 
 
   /* ========================================
@@ -245,6 +312,24 @@ function MeetingRoomPage() {
       return
     }
 
+    /*
+      Make sure the latest note is saved before
+      leaving the meeting.
+    */
+
+    const savedNotes =
+      JSON.parse(
+        localStorage.getItem('wabiMeetingNotes')
+      ) || {}
+
+    savedNotes[meeting.id] =
+      meetingNote
+
+    localStorage.setItem(
+      'wabiMeetingNotes',
+      JSON.stringify(savedNotes)
+    )
+
     saveMeetingChat(messages)
 
     const meetings =
@@ -269,6 +354,9 @@ function MeetingRoomPage() {
               new Date().toISOString(),
 
             messages,
+
+            meetingNote:
+              meetingNote,
           }
         }
 
@@ -294,7 +382,7 @@ function MeetingRoomPage() {
     const cleanMessage =
       message.trim()
 
-    if (!cleanMessage) {
+    if (!cleanMessage || !meeting) {
       return
     }
 
@@ -304,6 +392,8 @@ function MeetingRoomPage() {
       text: cleanMessage,
 
       sender: 'You',
+
+      initials: 'TZ',
 
       time:
         new Date().toLocaleTimeString(
@@ -315,10 +405,39 @@ function MeetingRoomPage() {
         ),
     }
 
-    setMessages((previous) => [
-      ...previous,
+    const updatedMessages = [
+      ...messages,
       newMessage,
-    ])
+    ]
+
+    setMessages(updatedMessages)
+
+    saveMeetingChat(updatedMessages)
+
+    const meetings =
+      JSON.parse(
+        localStorage.getItem('wabiMeetings')
+      ) || []
+
+    const updatedMeetings =
+      meetings.map((item) => {
+        if (
+          String(item.id) ===
+          String(meeting.id)
+        ) {
+          return {
+            ...item,
+            messages: updatedMessages,
+          }
+        }
+
+        return item
+      })
+
+    localStorage.setItem(
+      'wabiMeetings',
+      JSON.stringify(updatedMeetings)
+    )
 
     setMessage('')
   }
@@ -778,11 +897,15 @@ function MeetingRoomPage() {
           </div>
 
           <div className="meeting-room-title">
-            <strong>Meeting</strong>
+
+            <strong>
+              Meeting
+            </strong>
 
             <span>
               Meeting room
             </span>
+
           </div>
 
           <NavLink
@@ -1759,7 +1882,7 @@ function MeetingRoomPage() {
 
                   <span>
                     Your notes are saved automatically
-                    when you click Save Notes.
+                    as you type.
                   </span>
 
                 </div>
@@ -1984,6 +2107,7 @@ function MeetingRoomPage() {
                           <div className="poll-total">
 
                             {totalVotes}{' '}
+
                             {totalVotes === 1
                               ? 'vote'
                               : 'votes'}

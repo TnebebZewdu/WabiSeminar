@@ -7,7 +7,6 @@ function MeetingsPage() {
 
   useEffect(() => {
     const loadMeetings = () => {
-
       const savedMeetings =
         JSON.parse(
           localStorage.getItem('wabiMeetings')
@@ -31,16 +30,12 @@ function MeetingsPage() {
     }
   }, [])
 
-
-  /*
-   * ========================================
-   * UPCOMING
-   * ========================================
-   */
+  /* ========================================
+     UPCOMING
+  ======================================== */
 
   const upcomingMeetings = meetings
     .filter((meeting) => {
-
       if (meeting.completed === true) {
         return false
       }
@@ -52,7 +47,6 @@ function MeetingsPage() {
       return new Date(meeting.date) >= new Date()
     })
     .sort((a, b) => {
-
       if (!a.date) return 1
       if (!b.date) return -1
 
@@ -62,15 +56,12 @@ function MeetingsPage() {
       )
     })
 
+  /* ========================================
+     HISTORY
 
-  /*
-   * ========================================
-   * HISTORY
-   *
-   * Only meetings that the user actually
-   * left/completed.
-   * ========================================
-   */
+     Only meetings that the user actually
+     left/completed.
+  ======================================== */
 
   const meetingHistory = meetings
     .filter(
@@ -78,35 +69,27 @@ function MeetingsPage() {
         meeting.completed === true
     )
     .sort((a, b) => {
+      const dateA = new Date(
+        `${a.date || '1970-01-01'}T${
+          a.time || '00:00'
+        }`
+      )
 
-      const dateA =
-        new Date(
-          `${a.date || '1970-01-01'}T${
-            a.time || '00:00'
-          }`
-        )
-
-      const dateB =
-        new Date(
-          `${b.date || '1970-01-01'}T${
-            b.time || '00:00'
-          }`
-        )
+      const dateB = new Date(
+        `${b.date || '1970-01-01'}T${
+          b.time || '00:00'
+        }`
+      )
 
       return dateB - dateA
     })
 
-
-  /*
-   * ========================================
-   * DATE
-   * ========================================
-   */
+  /* ========================================
+     DATE
+  ======================================== */
 
   const getMeetingDate = (date) => {
-
     if (!date) {
-
       return {
         day: '--',
         month: '---',
@@ -114,61 +97,47 @@ function MeetingsPage() {
       }
     }
 
-    const meetingDate =
-      new Date(date)
+    const meetingDate = new Date(date)
 
     return {
+      day: meetingDate.getDate(),
 
-      day:
-        meetingDate.getDate(),
+      month: meetingDate
+        .toLocaleString('en-US', {
+          month: 'short',
+        })
+        .toUpperCase(),
 
-      month:
-        meetingDate
-          .toLocaleString(
-            'en-US',
-            {
-              month: 'short',
-            }
-          )
-          .toUpperCase(),
-
-      full:
-        meetingDate.toLocaleDateString(
-          'en-US',
-          {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          }
-        ),
+      full: meetingDate.toLocaleDateString(
+        'en-US',
+        {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }
+      ),
     }
   }
 
-
-  /*
-   * ========================================
-   * RENDER MEETING
-   * ========================================
-   */
+  /* ========================================
+     RENDER MEETING
+  ======================================== */
 
   const renderMeeting = (
     meeting,
     isHistory = false
   ) => {
-
-    const date =
-      getMeetingDate(meeting.date)
+    const date = getMeetingDate(
+      meeting.date
+    )
 
     return (
-
       <div
         className="upcoming-meeting"
         key={meeting.id}
       >
-
         <div className="meeting-date">
-
           <strong>
             {date.day}
           </strong>
@@ -176,12 +145,9 @@ function MeetingsPage() {
           <span>
             {date.month}
           </span>
-
         </div>
 
-
         <div className="meeting-info">
-
           <h3>
             {meeting.title ||
               'Untitled Meeting'}
@@ -199,25 +165,19 @@ function MeetingsPage() {
           </p>
 
           {meeting.description && (
-
             <p>
               {meeting.description}
             </p>
-
           )}
-
         </div>
-
 
         <span
           className="meeting-status"
           style={
             isHistory
               ? {
-                  background:
-                    '#f1f5f9',
-                  color:
-                    '#64748b',
+                  background: '#f1f5f9',
+                  color: '#64748b',
                 }
               : undefined
           }
@@ -227,40 +187,30 @@ function MeetingsPage() {
             : 'Upcoming'}
         </span>
 
-
         {isHistory ? (
-
           <NavLink
             to={`/meeting-room/${meeting.id}`}
             className="join-button"
             style={{
-              background:
-                '#f1f5f9',
-              color:
-                '#64748b',
+              background: '#f1f5f9',
+              color: '#64748b',
             }}
           >
             View
           </NavLink>
-
         ) : (
-
           <NavLink
             to={`/meeting-room/${meeting.id}`}
             className="join-button"
           >
             Join
           </NavLink>
-
         )}
-
       </div>
     )
   }
 
-
   return (
-
     <div className="app">
 
       {/* ========================================
@@ -275,6 +225,7 @@ function MeetingsPage() {
 
         <nav>
 
+          {/* HOME */}
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
@@ -290,7 +241,7 @@ function MeetingsPage() {
             Home
           </NavLink>
 
-
+          {/* MEETINGS */}
           <NavLink
             to="/meetings"
             className={({ isActive }) =>
@@ -306,12 +257,13 @@ function MeetingsPage() {
             Meetings
           </NavLink>
 
-
-          <a
-            className="nav-item"
-            href="#"
-            onClick={(e) =>
-              e.preventDefault()
+          {/* CHATS */}
+          <NavLink
+            to="/chats"
+            className={({ isActive }) =>
+              `nav-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <span className="nav-icon">
@@ -319,14 +271,15 @@ function MeetingsPage() {
             </span>
 
             Chats
-          </a>
+          </NavLink>
 
-
-          <a
-            className="nav-item"
-            href="#"
-            onClick={(e) =>
-              e.preventDefault()
+          {/* NOTES */}
+          <NavLink
+            to="/notes"
+            className={({ isActive }) =>
+              `nav-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <span className="nav-icon">
@@ -334,14 +287,15 @@ function MeetingsPage() {
             </span>
 
             Notes
-          </a>
+          </NavLink>
 
-
-          <a
-            className="nav-item"
-            href="#"
-            onClick={(e) =>
-              e.preventDefault()
+          {/* SETTINGS */}
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `nav-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <span className="nav-icon">
@@ -349,10 +303,9 @@ function MeetingsPage() {
             </span>
 
             Settings
-          </a>
+          </NavLink>
 
         </nav>
-
 
         <div className="sidebar-bottom">
 
@@ -371,7 +324,6 @@ function MeetingsPage() {
 
       </aside>
 
-
       {/* ========================================
           MAIN
       ======================================== */}
@@ -381,7 +333,6 @@ function MeetingsPage() {
         <header className="topbar">
 
           <div>
-
             <h1>
               Meetings
             </h1>
@@ -390,9 +341,7 @@ function MeetingsPage() {
               View your upcoming meetings and
               complete meeting history.
             </p>
-
           </div>
-
 
           <div className="meeting-actions">
 
@@ -414,7 +363,6 @@ function MeetingsPage() {
 
         </header>
 
-
         {/* ========================================
             UPCOMING
         ======================================== */}
@@ -424,7 +372,6 @@ function MeetingsPage() {
           <div className="section-header">
 
             <div>
-
               <h2>
                 Upcoming Meetings
               </h2>
@@ -433,7 +380,6 @@ function MeetingsPage() {
                 Meetings that are scheduled
                 for you
               </p>
-
             </div>
 
             <span
@@ -450,7 +396,6 @@ function MeetingsPage() {
             </span>
 
           </div>
-
 
           {upcomingMeetings.length === 0 ? (
 
@@ -481,7 +426,6 @@ function MeetingsPage() {
           ) : (
 
             <div>
-
               {upcomingMeetings.map(
                 (meeting) =>
                   renderMeeting(
@@ -489,13 +433,11 @@ function MeetingsPage() {
                     false
                   )
               )}
-
             </div>
 
           )}
 
         </section>
-
 
         {/* ========================================
             HISTORY
@@ -506,7 +448,6 @@ function MeetingsPage() {
           <div className="section-header">
 
             <div>
-
               <h2>
                 Meeting History
               </h2>
@@ -514,7 +455,6 @@ function MeetingsPage() {
               <p>
                 All of your completed meetings
               </p>
-
             </div>
 
             <span
@@ -531,7 +471,6 @@ function MeetingsPage() {
             </span>
 
           </div>
-
 
           {meetingHistory.length === 0 ? (
 
@@ -555,7 +494,6 @@ function MeetingsPage() {
           ) : (
 
             <div>
-
               {meetingHistory.map(
                 (meeting) =>
                   renderMeeting(
@@ -563,7 +501,6 @@ function MeetingsPage() {
                     true
                   )
               )}
-
             </div>
 
           )}

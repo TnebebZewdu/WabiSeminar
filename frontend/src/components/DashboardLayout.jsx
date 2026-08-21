@@ -1,7 +1,9 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import '../App.css'
 
 function DashboardLayout({ children }) {
+  const navigate = useNavigate()
+
   return (
     <div className="app">
 
@@ -14,47 +16,76 @@ function DashboardLayout({ children }) {
 
         <nav>
 
+          {/* Home */}
           <NavLink
             to="/dashboard"
-            className="nav-item"
+            className={({ isActive }) =>
+              `nav-item ${isActive ? 'active' : ''}`
+            }
           >
             <span className="nav-icon">⌂</span>
             Home
           </NavLink>
 
+
+          {/* Meetings */}
           <NavLink
             to="/meetings"
-            className="nav-item"
+            className={({ isActive }) =>
+              `nav-item ${isActive ? 'active' : ''}`
+            }
           >
             <span className="nav-icon">📅</span>
             Meetings
           </NavLink>
 
-          <a className="nav-item" href="#">
-            <span className="nav-icon">♙</span>
-            People
-          </a>
 
-          <a className="nav-item" href="#">
+          {/* Chats */}
+          <NavLink
+            to="/chats"
+            className={({ isActive }) =>
+              `nav-item ${isActive ? 'active' : ''}`
+            }
+          >
             <span className="nav-icon">▱</span>
             Chats
-          </a>
+          </NavLink>
 
-          <a className="nav-item" href="#">
+
+          {/* Notes */}
+          <NavLink
+            to="/notes"
+            className={({ isActive }) =>
+              `nav-item ${isActive ? 'active' : ''}`
+            }
+          >
             <span className="nav-icon">□</span>
             Notes
-          </a>
+          </NavLink>
 
-          <a className="nav-item" href="#">
+
+          {/* Settings */}
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `nav-item ${isActive ? 'active' : ''}`
+            }
+          >
             <span className="nav-icon">⚙</span>
             Settings
-          </a>
+          </NavLink>
 
         </nav>
 
+
+        {/* New Meeting */}
         <div className="sidebar-bottom">
 
-          <button className="new-meeting-sidebar">
+          <button
+            type="button"
+            className="new-meeting-sidebar"
+            onClick={() => navigate('/new-meeting')}
+          >
             <span>＋</span>
             New Meeting
           </button>
@@ -62,6 +93,7 @@ function DashboardLayout({ children }) {
         </div>
 
       </aside>
+
 
       {/* Page content */}
       <main className="main-content">

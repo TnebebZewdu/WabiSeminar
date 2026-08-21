@@ -24,18 +24,15 @@ function Dashboard() {
 
   const now = new Date()
 
-  /*
-   * ========================================
-   * UPCOMING
-   *
-   * Only meetings that have NOT been completed.
-   * Show maximum 3 on dashboard.
-   * ========================================
-   */
+  /* ========================================
+     UPCOMING
+
+     Only meetings that have NOT been completed.
+     Show maximum 3 on dashboard.
+  ======================================== */
 
   const upcomingMeetings = meetings
     .filter((meeting) => {
-
       if (meeting.completed === true) {
         return false
       }
@@ -47,26 +44,19 @@ function Dashboard() {
       return new Date(meeting.date) >= now
     })
     .sort((a, b) => {
-
       if (!a.date) return 1
       if (!b.date) return -1
 
-      return (
-        new Date(a.date) -
-        new Date(b.date)
-      )
+      return new Date(a.date) - new Date(b.date)
     })
     .slice(0, 3)
 
+  /* ========================================
+     RECENT
 
-  /*
-   * ========================================
-   * RECENT
-   *
-   * Only completed meetings.
-   * Show maximum 3.
-   * ========================================
-   */
+     Only completed meetings.
+     Show maximum 3.
+  ======================================== */
 
   const recentMeetings = meetings
     .filter(
@@ -74,34 +64,27 @@ function Dashboard() {
         meeting.completed === true
     )
     .sort((a, b) => {
+      const dateA = new Date(
+        `${a.date || '1970-01-01'}T${
+          a.time || '00:00'
+        }`
+      )
 
-      const dateA =
-        new Date(
-          `${a.date || '1970-01-01'}T${
-            a.time || '00:00'
-          }`
-        )
-
-      const dateB =
-        new Date(
-          `${b.date || '1970-01-01'}T${
-            b.time || '00:00'
-          }`
-        )
+      const dateB = new Date(
+        `${b.date || '1970-01-01'}T${
+          b.time || '00:00'
+        }`
+      )
 
       return dateB - dateA
     })
     .slice(0, 3)
 
-
-  /*
-   * ========================================
-   * DATE FORMAT
-   * ========================================
-   */
+  /* ========================================
+     DATE FORMAT
+  ======================================== */
 
   const formatMeetingDate = (date) => {
-
     if (!date) {
       return {
         day: '--',
@@ -110,37 +93,28 @@ function Dashboard() {
       }
     }
 
-    const meetingDate =
-      new Date(date)
+    const meetingDate = new Date(date)
 
     return {
+      day: meetingDate.getDate(),
 
-      day:
-        meetingDate.getDate(),
+      month: meetingDate
+        .toLocaleString('en-US', {
+          month: 'short',
+        })
+        .toUpperCase(),
 
-      month:
-        meetingDate
-          .toLocaleString(
-            'en-US',
-            {
-              month: 'short',
-            }
-          )
-          .toUpperCase(),
-
-      full:
-        meetingDate.toLocaleDateString(
-          'en-US',
-          {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          }
-        ),
+      full: meetingDate.toLocaleDateString(
+        'en-US',
+        {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }
+      ),
     }
   }
-
 
   return (
     <div className="app">
@@ -157,6 +131,8 @@ function Dashboard() {
 
         <nav>
 
+          {/* HOME */}
+
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
@@ -171,6 +147,9 @@ function Dashboard() {
 
             Home
           </NavLink>
+
+
+          {/* MEETINGS */}
 
           <NavLink
             to="/meetings"
@@ -187,11 +166,15 @@ function Dashboard() {
             Meetings
           </NavLink>
 
-          <a
-            className="nav-item"
-            href="#"
-            onClick={(e) =>
-              e.preventDefault()
+
+          {/* CHATS */}
+
+          <NavLink
+            to="/chats"
+            className={({ isActive }) =>
+              `nav-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <span className="nav-icon">
@@ -199,13 +182,17 @@ function Dashboard() {
             </span>
 
             Chats
-          </a>
+          </NavLink>
 
-          <a
-            className="nav-item"
-            href="#"
-            onClick={(e) =>
-              e.preventDefault()
+
+          {/* NOTES */}
+
+          <NavLink
+            to="/notes"
+            className={({ isActive }) =>
+              `nav-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <span className="nav-icon">
@@ -213,13 +200,17 @@ function Dashboard() {
             </span>
 
             Notes
-          </a>
+          </NavLink>
 
-          <a
-            className="nav-item"
-            href="#"
-            onClick={(e) =>
-              e.preventDefault()
+
+          {/* SETTINGS */}
+
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `nav-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <span className="nav-icon">
@@ -227,9 +218,12 @@ function Dashboard() {
             </span>
 
             Settings
-          </a>
+          </NavLink>
 
         </nav>
+
+
+        {/* NEW MEETING */}
 
         <div className="sidebar-bottom">
 
@@ -309,6 +303,7 @@ function Dashboard() {
             </div>
 
             <div>
+
               <strong>
                 New Meeting
               </strong>
@@ -316,6 +311,7 @@ function Dashboard() {
               <span>
                 Create a new meeting
               </span>
+
             </div>
 
           </NavLink>
@@ -331,6 +327,7 @@ function Dashboard() {
             </div>
 
             <div>
+
               <strong>
                 Join Meeting
               </strong>
@@ -338,6 +335,7 @@ function Dashboard() {
               <span>
                 Enter a meeting code
               </span>
+
             </div>
 
           </NavLink>
@@ -353,6 +351,7 @@ function Dashboard() {
             </div>
 
             <div>
+
               <strong>
                 Schedule
               </strong>
@@ -360,6 +359,7 @@ function Dashboard() {
               <span>
                 Plan a future meeting
               </span>
+
             </div>
 
           </NavLink>
@@ -463,15 +463,23 @@ function Dashboard() {
                         </h3>
 
                         <p>
+
                           {date.full}
+
                           {' · '}
+
                           {meeting.time ||
                             'Time not set'}
+
                           {' · '}
+
                           {meeting.duration ||
                             0}
+
                           {' minutes'}
+
                         </p>
+
 
                         {meeting.description && (
 
@@ -598,15 +606,23 @@ function Dashboard() {
                         </h3>
 
                         <p>
+
                           {date.full}
+
                           {' · '}
+
                           {meeting.time ||
                             'Time not set'}
+
                           {' · '}
+
                           {meeting.duration ||
                             0}
+
                           {' minutes'}
+
                         </p>
+
 
                         {meeting.description && (
 
