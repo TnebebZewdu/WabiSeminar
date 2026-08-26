@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apiRequest } from '../services/api'
 import './RegisterPage.css'
 
 function RegisterPage() {
@@ -40,60 +41,41 @@ function RegisterPage() {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+ 
+  const handleSubmit = async (e) => {
+  e.preventDefault()
 
-    const name = formData.name.trim()
-    const email = formData.email.trim().toLowerCase()
-    const password = formData.password
-    const confirmPassword = formData.confirmPassword
+  const name = formData.name.trim()
+  const email = formData.email.trim().toLowerCase()
+  const password = formData.password
+  const confirmPassword = formData.confirmPassword
 
-    if (!name || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields.')
-      return
-    }
+  if (!name || !email || !password || !confirmPassword) {
+    setError('Please fill in all fields.')
+    return
+  }
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.')
-      return
-    }
+  if (password !== confirmPassword) {
+    setError('Passwords do not match.')
+    return
+  }
 
-    const savedUsers =
-      JSON.parse(
-        localStorage.getItem('wabiUsers')
-      ) || []
-
-    const existingUser = savedUsers.find(
-      (user) =>
-        user.email.toLowerCase() === email
-    )
-
-    if (existingUser) {
-      setError(
-        'An account with this email already exists.'
-      )
-      return
-    }
-
-    const newUser = {
-      id: Date.now(),
-      name,
-      email,
-      password,
-    }
-
-    const updatedUsers = [
-      ...savedUsers,
-      newUser,
-    ]
-
-    localStorage.setItem(
-      'wabiUsers',
-      JSON.stringify(updatedUsers)
-    )
+  try {
+    await apiRequest('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    })
 
     navigate('/login')
+  } catch (err) {
+    setError(err.message)
   }
+}
+  
 
   return (
     <div className="register-page">

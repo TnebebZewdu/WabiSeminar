@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apiRequest } from '../services/api'
 import './LoginPage.css'
 
 function LoginPage() {
@@ -28,48 +29,40 @@ function LoginPage() {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+  e.preventDefault()
 
-    const enteredEmail =
-      email.trim().toLowerCase()
+  const enteredEmail = email.trim().toLowerCase()
+  const enteredPassword = password
 
-    const enteredPassword = password
+  if (!enteredEmail || !enteredPassword) {
+    setError('Please enter your email and password.')
+    return
+  }
 
-    if (!enteredEmail || !enteredPassword) {
-      setError(
-        'Please enter your email and password.'
+  try {
+    const data = await apiRequest('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+      }),
+    })
+
+    localStorage.setItem('token', data.token)
+
+    if (data.user) {
+      localStorage.setItem(
+        'wabiCurrentUser',
+        JSON.stringify(data.user)
       )
-      return
     }
-
-    const savedUsers =
-      JSON.parse(
-        localStorage.getItem('wabiUsers')
-      ) || []
-
-    const user = savedUsers.find(
-      (savedUser) =>
-        savedUser.email.toLowerCase() ===
-          enteredEmail &&
-        savedUser.password ===
-          enteredPassword
-    )
-
-    if (!user) {
-      setError(
-        'Invalid email or password.'
-      )
-      return
-    }
-
-    localStorage.setItem(
-      'wabiCurrentUser',
-      JSON.stringify(user)
-    )
 
     navigate('/dashboard')
+  } catch (err) {
+    setError(err.message)
   }
+}
 
   return (
     <div className="login-page">
