@@ -53,19 +53,19 @@ function MeetingRoomPage() {
      LOAD MEETING
   ======================================== */
 
-  useEffect(() => {
+ useEffect(() => {
   const loadMeeting = async () => {
     try {
       const result = await apiRequest(
         `/meetings/${meetingId}`
       )
 
-      if (!result || result.length === 0) {
+      if (!result) {
         setMeeting(null)
         return
       }
 
-      setMeeting(result[0])
+      setMeeting(result)
 
     } catch (error) {
       console.error('Load meeting error:', error)
