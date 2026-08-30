@@ -1,25 +1,33 @@
 const express = require("express");
 const pool = require("../config/database");
+const authenticateToken = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// GET: Fetch all meetings
-router.get("/", async (req, res) => {
+// GET: Fetch meetings for the logged-in user
+router.get("/:id", authenticateToken, async (req, res) => {
+    const userId = req.user.id;
+
     try {
         const [meetings] = await pool.query(
-            `SELECT
-                id,
-                host_id,
-                title,
-                description,
-                date,
-                time,
-                duration,
-                completed,
-                created_at,
-                updated_at
-             FROM meetings
-             ORDER BY date ASC, time ASC`
+            `SELECT DISTINCT
+                m.id,
+                m.host_id,
+                m.title,
+                m.description,
+                m.date,
+                m.time,
+                m.duration,
+                m.completed,
+                m.created_at,
+                m.updated_at
+             FROM meetings m
+             LEFT JOIN meeting_participants mp
+                ON m.id = mp.meeting_id
+             WHERE m.host_id = ?
+                OR mp.user_id = ?
+             ORDER BY m.date ASC, m.time ASC`,
+            [userId, userId]
         );
 
         res.json(meetings);
@@ -32,7 +40,6 @@ router.get("/", async (req, res) => {
         });
     }
 });
-
 // POST: Join a meeting
 router.post("/:id/join", async (req, res) => {
     const meetingId = req.params.id;
