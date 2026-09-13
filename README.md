@@ -1,1 +1,146 @@
 # WabiSeminar
+
+### Online Seminar & Meeting Platform
+
+**Team Project · Frontend Developer**
+
+WabiSeminar is an online seminar and meeting platform designed to bring meetings, participants, conversations, notes, and collaboration tools into one place.
+
+## Overview
+
+WabiSeminar provides a centralized environment for creating, joining, and managing online meetings.
+
+The platform includes a dashboard for managing meetings and a dedicated meeting-room experience with participant management, communication, and collaboration tools.
+
+## Features
+
+- User authentication
+- Meeting creation and management
+- Join meetings using a meeting code
+- Meeting dashboard
+- Participant management
+- Meeting room interface
+- Microphone and camera controls
+- Screen sharing
+- Raise hand
+- Participant reactions
+- Meeting chat
+- Meeting notes
+- Polls
+- Agenda management
+- File-related collaboration
+- Meeting notifications
+- User settings
+
+## My Contribution
+
+### Frontend Developer
+
+WabiSeminar was developed as a team project. My primary responsibility was frontend development.
+
+I contributed to:
+
+- Building React-based user interfaces
+- Developing the meetings interface
+- Implementing the meeting-room experience
+- Creating participant and meeting controls
+- Building UI for chat and collaboration features
+- Implementing notes, polls, files, and agenda interfaces
+- Connecting frontend components with backend APIs
+- Improving navigation, layout, responsiveness, and usability
+
+## Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- React Router
+- JavaScript
+- CSS
+
+### Backend
+
+- Node.js
+- Express
+- MySQL
+- JWT
+- bcrypt
+- Multer
+
+## Screenshots
+
+### Landing Page
+
+![WabiSeminar Landing Page](screenshots/landing.png)
+
+### Dashboard
+
+![WabiSeminar Dashboard](screenshots/dashboard.png)
+
+### Meeting Room
+
+![WabiSeminar Meeting Room](screenshots/meeting-room.png)
+
+## Project Structure
+
+```text
+WabiSeminar/
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── ...
+│   ├── package.json
+│   └── ...
+│
+├── backend/
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   └── ...
+│
+└── README.md
+
+Getting Started
+Prerequisites
+Node.js
+npm
+MySQL
+Installation
+
+Clone the repository:
+
+git clone <repository-url>
+cd WabiSeminar
+
+Install frontend dependencies:
+
+cd frontend
+npm install
+
+Install backend dependencies:
+
+cd ../backend
+npm install
+
+Configure the required environment variables before starting the application.
+
+Run the application
+
+Start the backend and frontend development servers using the project's configured scripts.
+
+Team Project
+
+WabiSeminar was developed collaboratively as a team project.
+
+My primary contribution was focused on frontend development and user experience, particularly the meetings and meeting-room interfaces.
+
+Future Improvements
+Improve responsive behavior across additional screen sizes
+Add automated frontend testing
+Improve accessibility
+Improve production deployment
+Expand real-time collaboration capabilities
+
+
