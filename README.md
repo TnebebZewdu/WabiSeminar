@@ -82,6 +82,10 @@ I contributed to:
 
 ![WabiSeminar Meeting Room](screenshots/meeting-room.png)
 
+### Meeting Room Collaboration Tools
+
+![Meeting Room Tools](screenshots/meeting-room-tools.png)
+
 ## Project Structure
 
 ```text
