@@ -90,7 +90,7 @@ I contributed to:
 
 This branch contains the frontend implementation of WabiSeminar.
 
-
+```text
 WabiSeminar/
 ├── frontend/
 │   ├── src/
@@ -107,12 +107,11 @@ WabiSeminar/
 │   └── meeting-room-tools.png
 │
 └── README.md
-
+```
 
 The `frontend/` directory contains the React-based user interface, while `screenshots/` contains project screenshots used in this README.
 
 This branch focuses on my frontend contribution to the WabiSeminar team project.
-
 
 Getting Started
 Prerequisites
