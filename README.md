@@ -113,45 +113,51 @@ The `frontend/` directory contains the React-based user interface, while `screen
 
 This branch focuses on my frontend contribution to the WabiSeminar team project.
 
-Getting Started
-Prerequisites
-Node.js
-npm
-MySQL
-Installation
+
+## Getting Started
+
+### Prerequisites
+
+* Node.js
+* npm
+
+### Installation
 
 Clone the repository:
 
+```bash
 git clone <repository-url>
 cd WabiSeminar
+```
 
 Install frontend dependencies:
 
+```bash
 cd frontend
 npm install
+```
 
-Install backend dependencies:
+### Run the Frontend
 
-cd ../backend
-npm install
+Start the frontend development server using the project's configured npm script.
 
-Configure the required environment variables before starting the application.
+```bash
+npm run dev
+```
 
-Run the application
+> The backend is maintained separately by the team on the appropriate project branch.
 
-Start the backend and frontend development servers using the project's configured scripts.
-
-Team Project
+## Team Project
 
 WabiSeminar was developed collaboratively as a team project.
 
-My primary contribution was focused on frontend development and user experience, particularly the meetings and meeting-room interfaces.
+My primary contribution focused on frontend development and user experience, particularly the meetings and meeting-room interfaces.
 
-Future Improvements
-Improve responsive behavior across additional screen sizes
-Add automated frontend testing
-Improve accessibility
-Improve production deployment
-Expand real-time collaboration capabilities
+## Future Improvements
 
+* Improve responsive behavior across additional screen sizes
+* Add automated frontend testing
+* Improve accessibility
+* Improve production deployment
+* Expand real-time collaboration capabilities
 
