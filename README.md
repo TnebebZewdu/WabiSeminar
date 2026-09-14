@@ -59,14 +59,6 @@ I contributed to:
 - JavaScript
 - CSS
 
-### Backend
-
-- Node.js
-- Express
-- MySQL
-- JWT
-- bcrypt
-- Multer
 
 ## Screenshots
 
