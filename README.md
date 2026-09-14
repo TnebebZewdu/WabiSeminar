@@ -88,7 +88,9 @@ I contributed to:
 
 ## Project Structure
 
-```text
+This branch contains the frontend implementation of WabiSeminar.
+
+
 WabiSeminar/
 ├── frontend/
 │   ├── src/
@@ -98,13 +100,19 @@ WabiSeminar/
 │   ├── package.json
 │   └── ...
 │
-├── backend/
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   └── ...
+├── screenshots/
+│   ├── landing.png
+│   ├── dashboard.png
+│   ├── meeting-room.png
+│   └── meeting-room-tools.png
 │
 └── README.md
+
+
+The `frontend/` directory contains the React-based user interface, while `screenshots/` contains project screenshots used in this README.
+
+This branch focuses on my frontend contribution to the WabiSeminar team project.
+
 
 Getting Started
 Prerequisites
